@@ -10,4 +10,4 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	var movement_direction = Input.get_axis("up", "down")
 	position.y += movement_direction  * movement_speed * delta
-	
+	position.y = clamp(position.y, 57.5, get_viewport_rect().size.y - 57.5)

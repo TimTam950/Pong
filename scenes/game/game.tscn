@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://c85vwm1pnay6q"]
+[gd_scene load_steps=6 format=3 uid="uid://c85vwm1pnay6q"]
 
 [ext_resource type="Texture2D" uid="uid://c1bhqstdswsgx" path="res://assets/black.png" id="1_h4x7i"]
 [ext_resource type="PackedScene" uid="uid://cbx8ysmp4dn0m" path="res://scenes/paddle/player_paddle.tscn" id="2_ky6il"]
 [ext_resource type="PackedScene" uid="uid://b6o6d8sedxsck" path="res://scenes/ball/ball.tscn" id="3_mc2q6"]
+[ext_resource type="PackedScene" uid="uid://bpprgrk22xwyc" path="res://scenes/paddle/ai_paddle.tscn" id="4_w0r4i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ikvb"]
 size = Vector2(1146, 32)
@@ -35,3 +36,7 @@ shape = SubResource("RectangleShape2D_5ikvb")
 
 [node name="Ball" parent="." instance=ExtResource("3_mc2q6")]
 position = Vector2(535, 318)
+
+[node name="AI_Paddle" parent="." node_paths=PackedStringArray("ball") instance=ExtResource("4_w0r4i")]
+position = Vector2(1109, 328)
+ball = NodePath("../Ball")
