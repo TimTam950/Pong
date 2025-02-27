@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="Pong"
-run/main_scene="res://scenes/game/game.tscn"
+run/main_scene="res://scenes/main_menu/main_menu.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+State="*res://scripts/state.gd"
 
 [display]
 
