@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://c85vwm1pnay6q"]
+[gd_scene load_steps=8 format=3 uid="uid://c85vwm1pnay6q"]
 
 [ext_resource type="Texture2D" uid="uid://c1bhqstdswsgx" path="res://assets/black.png" id="1_h4x7i"]
+[ext_resource type="Script" path="res://scenes/game/game.gd" id="1_hkj7h"]
 [ext_resource type="PackedScene" uid="uid://cbx8ysmp4dn0m" path="res://scenes/paddle/player_paddle.tscn" id="2_ky6il"]
 [ext_resource type="PackedScene" uid="uid://b6o6d8sedxsck" path="res://scenes/ball/ball.tscn" id="3_mc2q6"]
 [ext_resource type="PackedScene" uid="uid://bpprgrk22xwyc" path="res://scenes/paddle/ai_paddle.tscn" id="4_w0r4i"]
@@ -8,7 +9,11 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ikvb"]
 size = Vector2(1146, 32)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dgt0e"]
+size = Vector2(3, 699)
+
 [node name="Game" type="Node2D"]
+script = ExtResource("1_hkj7h")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(574, 319)
@@ -37,6 +42,66 @@ shape = SubResource("RectangleShape2D_5ikvb")
 [node name="Ball" parent="." instance=ExtResource("3_mc2q6")]
 position = Vector2(535, 318)
 
-[node name="AI_Paddle" parent="." node_paths=PackedStringArray("ball") instance=ExtResource("4_w0r4i")]
+[node name="AIPaddle" parent="." instance=ExtResource("4_w0r4i")]
 position = Vector2(1109, 328)
-ball = NodePath("../Ball")
+
+[node name="AIScoreZone" type="Area2D" parent="."]
+position = Vector2(-56, 0)
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AIScoreZone"]
+position = Vector2(51, 331)
+shape = SubResource("RectangleShape2D_dgt0e")
+
+[node name="PlayerScoreZone" type="Area2D" parent="."]
+position = Vector2(1109, -5)
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerScoreZone"]
+position = Vector2(51, 331)
+shape = SubResource("RectangleShape2D_dgt0e")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 366.0
+offset_top = 6.0
+offset_right = 718.0
+offset_bottom = 46.0
+
+[node name="PlayerScore" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 108.0
+offset_top = -8.0
+offset_right = 148.0
+offset_bottom = 59.0
+theme_override_font_sizes/font_size = 48
+text = "0"
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 187.0
+offset_top = -12.0
+offset_right = 227.0
+offset_bottom = 55.0
+theme_override_font_sizes/font_size = 48
+text = "-"
+
+[node name="AIScore" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 252.0
+offset_top = -7.0
+offset_right = 292.0
+offset_bottom = 60.0
+theme_override_font_sizes/font_size = 48
+text = "0"
+
+[node name="RespawnTimer" type="Timer" parent="."]
+wait_time = 2.5
+one_shot = true
+
+[connection signal="body_entered" from="AIScoreZone" to="." method="_on_ai_score_zone_body_entered"]
+[connection signal="body_entered" from="PlayerScoreZone" to="." method="_on_player_score_zone_body_entered"]
+[connection signal="timeout" from="RespawnTimer" to="." method="_on_respawn_timer_timeout"]
